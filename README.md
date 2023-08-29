@@ -6,10 +6,9 @@ This project demonstrates contact pagination using GORM, Gin, Testify, OpenAPI S
 
 We can run this Go boilerplate project with following steps:
 
-- Clone this project.
 - Move to your workspace: `cd your-workspace`.
 - Clone this project into your workspace: `git clone https://github.com/prayogatriady/contact-pagination`.
-- Move to the project root directory: `cd go-vertical-slice-template`.
+- Move to the project root directory: `cd contact-pagination`.
 - Create a file `.env` similar to existing `.env` file at the root directory for your environment variables.
 
 ```bash
