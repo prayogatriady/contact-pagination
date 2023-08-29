@@ -30,7 +30,7 @@ PORT_TEST=your-port-in-testing-environment
 - [Install `go`](https://go.dev/doc/install) if not installed on your machine.
 - Create table manually, you can copy-paste the sql syntax from migration folder
 - Run `go run cmd/main.go`.
-- Access API using [http://localhost:9080](http://localhost:9080).
+- Example to access the pagination API [http://localhost:8000/api/contacts?limit=2&page=1&sort=id%20asc](http://localhost:8000/api/contacts?limit=2&page=1&sort=id%20asc).
 
 ## How to run the tests?
 
