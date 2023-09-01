@@ -53,3 +53,7 @@ func (p *Pagination) GetRandom() string {
 func (p *Pagination) GetCustom() string {
 	return "custom"
 }
+
+func (p *Pagination) GetCheck() string {
+	return "check"
+}
