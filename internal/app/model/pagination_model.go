@@ -57,3 +57,7 @@ func (p *Pagination) GetCustom() string {
 func (p *Pagination) GetCheck() string {
 	return "check"
 }
+
+func (p *Pagination) GetRandomzation() string {
+	return "Randomization"
+}
