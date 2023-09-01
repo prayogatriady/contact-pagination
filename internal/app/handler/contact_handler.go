@@ -23,6 +23,7 @@ func NewContactHandler(contactService service.ContactService) ContactHandler {
 	}
 }
 
+// Function to get list data
 func (handler *contactHandler) Paginate(c *gin.Context) {
 	var (
 		request  *model.PaginationRequest
