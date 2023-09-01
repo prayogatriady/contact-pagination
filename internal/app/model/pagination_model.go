@@ -49,3 +49,7 @@ func (p *Pagination) GetSort() string {
 func (p *Pagination) GetRandom() string {
 	return "Random"
 }
+
+func (p *Pagination) GetCustom() string {
+	return "custom"
+}
