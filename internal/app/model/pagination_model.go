@@ -45,3 +45,7 @@ func (p *Pagination) GetSort() string {
 	}
 	return p.Sort
 }
+
+func (p *Pagination) GetRandom() string {
+	return "Random"
+}
