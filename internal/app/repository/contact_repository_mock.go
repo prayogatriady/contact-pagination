@@ -9,38 +9,29 @@ type ContactRepositoryMock struct {
 	mock.Mock
 }
 
-func (r *ContactRepositoryMock) Paginate(offset int, limit int, sort string) ([]*model.Contact, error) {
-	arguments := r.Called(offset, limit, sort)
+func (m *ContactRepositoryMock) GetContactList(pagination *model.Pagination) ([]*model.Contact, int64, error) {
+    args := m.Called(pagination)
+    return args.Get(0).([]*model.Contact), args.Get(1).(int64), args.Error(2)
 
-	var (
-		return1 []*model.Contact
-		return2 error
-	)
-
-	if arguments.Get(0) != nil {
-		return1 = arguments.Get(0).([]*model.Contact)
-	}
-	if arguments.Get(1) != nil {
-		return2 = arguments.Get(1).(error)
-	}
-
-	return return1, return2
 }
 
-func (r *ContactRepositoryMock) Count(value interface{}) (int64, error) {
-	arguments := r.Called(value)
+func (m *ContactRepositoryMock) GetContact(contactId int) (*model.Contact, error) {
+	args := m.Called(contactId)
+    return args.Get(0).(*model.Contact), args.Error(1)
 
-	var (
-		return1 int64
-		return2 error
-	)
+}
 
-	if arguments.Get(0) != nil {
-		return1 = arguments.Get(0).(int64)
-	}
-	if arguments.Get(1) != nil {
-		return2 = arguments.Get(1).(error)
-	}
+func (m *ContactRepositoryMock) CreateContact(contact *model.Contact) (err error) {
+    args := m.Called(contact)
+    return args.Error(0)
+}
 
-	return return1, return2
+func (m *ContactRepositoryMock) UpdateContact(contact *model.Contact) (err error) {
+	args := m.Called(contact)
+    return args.Error(0)
+}
+
+func (m *ContactRepositoryMock) DeleteContact(contactId int) (err error) {
+	args := m.Called(contactId)
+    return args.Error(0)
 }
