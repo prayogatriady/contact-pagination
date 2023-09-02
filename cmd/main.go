@@ -13,12 +13,9 @@ import (
 
 func main() {
 
-	cfg, err := config.NewConfig()
-	if err != nil {
-		log.Fatal("Error loading config:", err)
-	}
-
-	db, err := infrastructure.NewDatabase(cfg.DBUser, cfg.DBPassword, cfg.DBHost, cfg.DBPort, cfg.DBName)
+	cfg := config.NewConfig()
+	
+	db, err := infrastructure.NewDatabase(cfg)
 	if err != nil {
 		log.Fatal("Error initialize database:", err)
 	}
@@ -33,5 +30,5 @@ func main() {
 		api.GET("/contacts", contactHandler.Paginate)
 	}
 
-	log.Fatal(router.Run(":" + cfg.Port))
+	log.Fatal(router.Run(":" + cfg.App.Port))
 }
