@@ -39,7 +39,7 @@ func (service *contactService) Paginate(request *model.PaginationRequest) (*mode
 		Sort:  request.Sort,
 	}
 
-	contacts, err = service.contactRepository.Paginate(pagination.GetOffset(), pagination.GetLimit(), pagination.GetSort())
+	contacts, totalRows, err = service.contactRepository.GetContactList(pagination)
 	if err != nil {
 		return nil, err
 	}
@@ -53,11 +53,6 @@ func (service *contactService) Paginate(request *model.PaginationRequest) (*mode
 			Phone:     contact.Phone,
 		}
 		contactsResponse = append(contactsResponse, contactResponse)
-	}
-
-	totalRows, err = service.contactRepository.Count(contacts)
-	if err != nil {
-		return nil, err
 	}
 
 	totalPages = int(math.Ceil(float64(totalRows) / float64(pagination.GetLimit())))
