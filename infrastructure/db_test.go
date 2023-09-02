@@ -1,10 +1,12 @@
 package infrastructure
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/joho/godotenv"
+	"github.com/prayogatriady/golang-rest-pagination/internal/config"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -12,6 +14,15 @@ func Test_NewDatabase(t *testing.T) {
 	err := godotenv.Load("../.env")
 	assert.NoError(t, err)
 
-	_, err = NewDatabase(os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME"))
+	var cfg config.AppConfig
+	cfg.Database.DBUser = os.Getenv("DB_USER")
+	cfg.Database.DBPassword = os.Getenv("DB_PASSWORD")
+	cfg.Database.DBHost = os.Getenv("DB_HOST")
+	cfg.Database.DBPort = os.Getenv("DB_PORT")
+	cfg.Database.DBName = os.Getenv("DB_NAME")
+
+	fmt.Println(cfg.Database.DBName)
+
+	_, err = NewDatabase(&cfg)
 	assert.NoError(t, err)
 }

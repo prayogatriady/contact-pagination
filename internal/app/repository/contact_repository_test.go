@@ -19,15 +19,14 @@ func setUpDB() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	cfg := &config.Config{
-		DBUser:     os.Getenv("DB_USER_TEST"),
-		DBPassword: os.Getenv("DB_PASSWORD_TEST"),
-		DBHost:     os.Getenv("DB_HOST_TEST"),
-		DBPort:     os.Getenv("DB_PORT_TEST"),
-		DBName:     os.Getenv("DB_NAME_TEST"),
-	}
+	var cfg config.AppConfig
+	cfg.Database.DBUser = os.Getenv("DB_USER")
+	cfg.Database.DBPassword = os.Getenv("DB_PASSWORD")
+	cfg.Database.DBHost = os.Getenv("DB_HOST")
+	cfg.Database.DBPort = os.Getenv("DB_PORT")
+	cfg.Database.DBName = os.Getenv("DB_NAME")
 
-	db, err := infrastructure.NewDatabase(cfg.DBUser, cfg.DBPassword, cfg.DBHost, cfg.DBPort, cfg.DBName)
+	db, err := infrastructure.NewDatabase(&cfg)
 	if err != nil {
 		return nil, err
 	}
