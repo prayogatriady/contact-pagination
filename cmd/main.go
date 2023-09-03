@@ -27,7 +27,11 @@ func main() {
 	router := gin.Default()
 	api := router.Group("/api")
 	{
-		api.GET("/contacts", contactHandler.Paginate)
+		api.GET("/contacts", contactHandler.GetContactList)
+		api.GET("/contact/:id", contactHandler.GetContact)
+		api.POST("/contact", contactHandler.CreateContact)
+		api.PUT("/contact/:id", contactHandler.UpdateContact)
+		api.DELETE("/contact/:id", contactHandler.DeleteContact)
 	}
 
 	log.Fatal(router.Run(":" + cfg.App.Port))

@@ -10,8 +10,8 @@ import (
 type ContactService interface {
 	GetContactList(request *model.PaginationRequest) (response *model.PaginationResponse, err error)
 	GetContact(contactId int) (response *model.ContactResponse, err error)
-	CreateContact(request *model.ContactRequest) (err error)
-	UpdateContact(contactId int, request *model.ContactRequest) (err error)
+	CreateContact(request *model.CreateContactRequest) (err error)
+	UpdateContact(contactId int, request *model.UpdateContactRequest) (err error)
 	DeleteContact(contactId int) (err error)
 }
 
@@ -93,7 +93,7 @@ func (service *contactService) GetContact(contactId int) (response *model.Contac
 	return
 }
 
-func (service *contactService) CreateContact(request *model.ContactRequest) (err error) {
+func (service *contactService) CreateContact(request *model.CreateContactRequest) (err error) {
 
 	var (
 		contact *model.Contact
@@ -111,7 +111,7 @@ func (service *contactService) CreateContact(request *model.ContactRequest) (err
 	return
 }
 
-func (service *contactService) UpdateContact(contactId int, request *model.ContactRequest) (err error) {
+func (service *contactService) UpdateContact(contactId int, request *model.UpdateContactRequest) (err error) {
 
 	var (
 		contact *model.Contact
