@@ -100,7 +100,7 @@ func TestContactService_GetContact(t *testing.T) {
 func TestContactService_CreateContact(t *testing.T) {
 
 	// Set up parameter data
-	request := &model.ContactRequest{
+	request := &model.CreateContactRequest{
 		FirstName: "Prayoga", 
 		LastName: "Triady",
 		Email: "yoga@gmail.com",
@@ -139,7 +139,7 @@ func TestContactService_UpdateContact(t *testing.T) {
 	// Set up parameter data
 	contactId := 1
 
-	request := &model.ContactRequest{
+	request := &model.UpdateContactRequest{
 		FirstName: "Prayoga", 
 		LastName: "Triady",
 		Email: "yoga@gmail.com",
