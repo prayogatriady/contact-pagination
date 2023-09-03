@@ -17,6 +17,14 @@ type Contact struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
 }
 
+type ContactRequest struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Phone     string `json:"phone"`
+}
+
+
 type ContactResponse struct {
 	ID        int    `json:"user_id"`
 	FirstName string `json:"first_name"`

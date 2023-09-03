@@ -8,7 +8,11 @@ import (
 )
 
 type ContactService interface {
-	Paginate(request *model.PaginationRequest) (*model.PaginationResponse, error)
+	GetContactList(request *model.PaginationRequest) (response *model.PaginationResponse, err error)
+	GetContact(contactId int) (response *model.ContactResponse, err error)
+	CreateContact(request *model.ContactRequest) (err error)
+	UpdateContact(contactId int, request *model.ContactRequest) (err error)
+	DeleteContact(contactId int) (err error)
 }
 
 type contactService struct {
@@ -21,16 +25,14 @@ func NewContactService(contactRepository repository.ContactRepository) ContactSe
 	}
 }
 
-func (service *contactService) Paginate(request *model.PaginationRequest) (*model.PaginationResponse, error) {
+func (service *contactService) GetContactList(request *model.PaginationRequest) (response *model.PaginationResponse, err error) {
 	var (
 		pagination       *model.Pagination
 		contacts         []*model.Contact
 		contactResponse  *model.ContactResponse
 		contactsResponse []*model.ContactResponse
-		err              error
 		totalRows        int64
 		totalPages       int
-		response         *model.PaginationResponse
 	)
 
 	pagination = &model.Pagination{
@@ -41,7 +43,7 @@ func (service *contactService) Paginate(request *model.PaginationRequest) (*mode
 
 	contacts, totalRows, err = service.contactRepository.GetContactList(pagination)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	for _, contact := range contacts {
@@ -66,5 +68,70 @@ func (service *contactService) Paginate(request *model.PaginationRequest) (*mode
 		Rows:       contactsResponse,
 	}
 
-	return response, nil
+	return
+}
+
+func (service *contactService) GetContact(contactId int) (response *model.ContactResponse, err error) {
+
+	var (
+		contact *model.Contact
+	)
+
+	contact, err = service.contactRepository.GetContact(contactId)
+	if err != nil {
+		return
+	}
+
+	response = &model.ContactResponse{
+		ID: contact.ID,
+		FirstName: contact.FirstName,
+		LastName: contact.LastName,
+		Email: contact.Email,
+		Phone: contact.Phone,
+	}
+
+	return
+}
+
+func (service *contactService) CreateContact(request *model.ContactRequest) (err error) {
+
+	var (
+		contact *model.Contact
+	)
+
+	contact = &model.Contact{
+		FirstName: request.FirstName,
+		LastName: request.LastName,
+		Email: request.Email,
+		Phone: request.Phone,
+	}
+
+	err = service.contactRepository.CreateContact(contact)
+
+	return
+}
+
+func (service *contactService) UpdateContact(contactId int, request *model.ContactRequest) (err error) {
+
+	var (
+		contact *model.Contact
+	)
+
+	contact = &model.Contact{
+		ID: contactId,
+		FirstName: request.FirstName,
+		LastName: request.LastName,
+		Email: request.Email,
+		Phone: request.Phone,
+	}
+
+	err = service.contactRepository.UpdateContact(contact)
+	
+	return
+}
+
+func (service *contactService) DeleteContact(contactId int) (err error) {
+
+	err = service.contactRepository.DeleteContact(contactId)
+	return
 }
