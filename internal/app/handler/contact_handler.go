@@ -56,7 +56,7 @@ func (handler *contactHandler) Paginate(c *gin.Context) {
 		Sort:  c.Query("sort"),
 	}
 
-	response, err = handler.contactService.Paginate(request)
+	response, err = handler.contactService.GetContactList(request)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status":  "500 - INTERNAL SERVER ERROR",
