@@ -13,6 +13,26 @@ import (
 	"gorm.io/gorm"
 )
 
+var db *gorm.DB
+
+func TestMain(m *testing.M) {
+	var err error
+
+	db, err = setUpDB()
+	if err != nil {
+		log.Fatal("Error initialize database:", err)
+	}
+
+	createTestData(db)
+
+	result := m.Run()
+
+	cleanupTestData(db)
+
+	os.Exit(result)
+	
+}
+
 // Set up the testing database environment
 func setUpDB() (*gorm.DB, error) {
 	err := godotenv.Load("../../../.env")
@@ -58,12 +78,6 @@ func cleanupTestData(db *gorm.DB) error {
 
 // Unit test function for testing GetContactList
 func TestContactRepository_GetContactList(t *testing.T) {
-	db, err := setUpDB()
-	if err != nil {
-		log.Fatal("Error initialize database:", err)
-	}
-
-	assert.NoError(t, createTestData(db))
 
 	repo := NewUserRepository(db)
 	pagination := model.Pagination{
@@ -77,18 +91,10 @@ func TestContactRepository_GetContactList(t *testing.T) {
 	assert.Equal(t, 3, contacts[0].ID)
 	assert.Equal(t, 4, contacts[1].ID)
 	assert.Equal(t, int64(5), totalRows)
-
-	assert.NoError(t, cleanupTestData(db))
 }
 
 // Unit test function for testing GetContact
 func TestContactRepository_GetContact(t *testing.T) {
-	db, err := setUpDB()
-	if err != nil {
-		log.Fatal("Error initialize database:", err)
-	}
-
-	assert.NoError(t, createTestData(db))
 
 	repo := NewUserRepository(db)
 	contact, err := repo.GetContact(1)
@@ -96,55 +102,47 @@ func TestContactRepository_GetContact(t *testing.T) {
 
 	assert.Equal(t, "Prayoga", contact.FirstName)
 	assert.Equal(t, "Triady", contact.LastName)
-
-	assert.NoError(t, cleanupTestData(db))
 }
 
 // Unit test function for testing CreateContact
 func TestContactRepository_CreateContact(t *testing.T) {
-	db, err := setUpDB()
-	if err != nil {
-		log.Fatal("Error initialize database:", err)
+
+	contact := &model.Contact{
+		ID: 11, 
+		FirstName: "Prayoga", 
+		LastName: "Triady",
+		Email: "yoga@gmail.com",
+		Phone: "081211112222",
 	}
 
-	contacts := getContactsData()
-
 	repo := NewUserRepository(db)
-	assert.NoError(t, repo.CreateContact(contacts[0]))
+	assert.NoError(t, repo.CreateContact(contact))
 
-	contactDb, _ := repo.GetContact(1)
+	contactDb, _ := repo.GetContact(contact.ID)
 	assert.Equal(t, "Prayoga", contactDb.FirstName)
 	assert.Equal(t, "Triady", contactDb.LastName)
-
-	assert.NoError(t, cleanupTestData(db))
+	assert.Equal(t, "yoga@gmail.com", contactDb.Email)
+	assert.Equal(t, "081211112222", contactDb.Phone)
 }
 
 // Unit test function for testing UpdateContact
 func TestContactRepository_UpdateContact(t *testing.T) {
-	db, err := setUpDB()
-	if err != nil {
-		log.Fatal("Error initialize database:", err)
-	}
-
-	assert.NoError(t, createTestData(db))
 
 	repo := NewUserRepository(db)
-	contact := model.Contact{
+	contact := &model.Contact{
 		ID: 1, 
 		// FirstName: "Prayoga", 
 		// LastName: "Triady",
 		Email: "yoga@gmail.com",
 		Phone: "081211112222",
 	}
-	assert.NoError(t, repo.UpdateContact(&contact))
+	assert.NoError(t, repo.UpdateContact(contact))
 
-	contactDb, err := repo.GetContact(1)
+	contactDb, _ := repo.GetContact(1)
 	assert.Equal(t, "Prayoga", contactDb.FirstName)
 	assert.Equal(t, "Triady", contactDb.LastName)
 	assert.Equal(t, "yoga@gmail.com", contactDb.Email)
 	assert.Equal(t, "081211112222", contactDb.Phone)
-
-	assert.NoError(t, cleanupTestData(db))
 }
 
 // Unit test function for testing DeleteContact
@@ -154,14 +152,10 @@ func TestContactRepository_DeleteContact(t *testing.T) {
 		log.Fatal("Error initialize database:", err)
 	}
 
-	assert.NoError(t, createTestData(db))
-
 	repo := NewUserRepository(db)
 
 	assert.NoError(t, repo.DeleteContact(1))
 
 	contactDb, err := repo.GetContact(1)
 	assert.NotNil(t, contactDb.DeletedAt)
-
-	assert.NoError(t, cleanupTestData(db))
 }
