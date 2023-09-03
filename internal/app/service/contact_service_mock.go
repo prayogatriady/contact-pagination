@@ -17,7 +17,7 @@ func (m *ContactServiceMock) GetContactList(request *model.PaginationRequest) (*
 	return nil, args.Error(1)
 }
 
-func (m *ContactServiceMock) GetContact(contactId int) (response *model.ContactResponse, err error) {
+func (m *ContactServiceMock) GetContact(contactId int) (*model.ContactResponse, error) {
 	args := m.Called(contactId)
 	if args.Get(0) != nil {
 		return args.Get(0).(*model.ContactResponse), args.Error(1)
@@ -25,12 +25,12 @@ func (m *ContactServiceMock) GetContact(contactId int) (response *model.ContactR
 	return nil, args.Error(1)
 }
 
-func (m *ContactServiceMock) CreateContact(request *model.ContactRequest) (err error) {
+func (m *ContactServiceMock) CreateContact(request *model.CreateContactRequest) (err error) {
 	args := m.Called(request)
 	return args.Error(0)
 }
 
-func (m *ContactServiceMock) UpdateContact(contactId int, request *model.ContactRequest) (err error) {
+func (m *ContactServiceMock) UpdateContact(contactId int, request *model.UpdateContactRequest) (err error) {
 	args := m.Called(contactId, request)
 	return args.Error(0)
 }
