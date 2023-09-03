@@ -17,13 +17,19 @@ type Contact struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
 }
 
-type ContactRequest struct {
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Email     string `json:"email"`
-	Phone     string `json:"phone"`
+type CreateContactRequest struct {
+	FirstName string `json:"first_name" validate:"required"`
+	LastName  string `json:"last_name" validate:"required"`
+	Email     string `json:"email" validate:"required,email"`
+	Phone     string `json:"phone" validate:"required"`
 }
 
+type UpdateContactRequest struct {
+	FirstName string `json:"first_name" validate:"required"`
+	LastName  string `json:"last_name" validate:"required"`
+	Email     string `json:"email" validate:"required,email"`
+	Phone     string `json:"phone" validate:"required"`
+}
 
 type ContactResponse struct {
 	ID        int    `json:"user_id"`
